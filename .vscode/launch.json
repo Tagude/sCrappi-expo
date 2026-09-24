@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ScrappiApplication<scrappi>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.talentotech.scrappi.ScrappiApplication",
+            "projectName": "scrappi",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

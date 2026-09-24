@@ -1,0 +1,135 @@
+<div class="container-fluid p-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="fw-bold text-dark mb-0">Panel de Control sCrappi</h2>
+      <p class="fs-4 text-secondary mt-2">
+        Bienvenido de nuevo,
+        <span
+          class="badge rounded-pill text-bg-info text-uppercase fw-bold px-3 py-2 ms-2 shadow-sm"
+        >
+          {{ nombreUsuario }} {{ apellidoUsuario }}
+        </span>
+      </p>
+    </div>
+    <div
+      class="d-none d-md-flex align-items-center bg-white border rounded-pill px-3 py-1 shadow-sm"
+    >
+      <span class="spinner-grow spinner-grow-sm text-success me-2"></span>
+      <small class="fw-bold text-muted">Sistema Online: {{ hoy | date: 'HH:mm' }}</small>
+    </div>
+  </div>
+  <div class="row g-3 mb-4 text-white">
+    <div class="col-md-4">
+      <div
+        class="card border-0 shadow-sm p-3"
+        style="background: linear-gradient(45deg, #0d6efd, #0dcaf0); border-radius: 15px"
+      >
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <small class="text-uppercase fw-bold opacity-75">Último Evento</small>
+            <div class="h5 mb-0">{{ lastEvent || 'Cargando...' }}</div>
+          </div>
+          <i class="bi bi-clock-history fs-2 opacity-50"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div
+        class="card border-0 shadow-sm p-3"
+        [style.background]="
+          isInside
+            ? 'linear-gradient(45deg, #198754, #20c997)'
+            : 'linear-gradient(45deg, #6c757d, #adb5bd)'
+        "
+        style="border-radius: 15px"
+      >
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <small class="text-uppercase fw-bold opacity-75">Estado Actual</small>
+            <div class="h5 mb-0">{{ locationStatus || 'Localizando...' }}</div>
+          </div>
+          <i [ngClass]="isInside ? 'bi-geo-alt-fill' : 'bi-geo-alt'" class="bi fs-2 opacity-50"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div
+        class="card border-0 shadow-sm p-3"
+        style="background: linear-gradient(45deg, #dc3545, #fd7e14); border-radius: 15px"
+      >
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <small class="text-uppercase fw-bold opacity-75">Alertas Hoy</small>
+            <div class="h5 mb-0">{{ alertasPendientes }} Incumplimientos</div>
+          </div>
+          <i class="bi bi-exclamation-triangle-fill fs-2 opacity-50"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card border-0 shadow-sm p-4" style="border-radius: 20px">
+        <h5 class="fw-bold mb-3">
+          <i class="bi bi-bar-chart-line me-2 text-primary"></i>Cumplimiento Semanal
+        </h5>
+        <div style="height: 250px">
+          <canvas #cumplimientoChart></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="card border-0 shadow-sm h-100 hover-card" style="border-radius: 20px">
+        <div class="card-body p-4 text-center">
+          <div class="icon-circle bg-primary-subtle text-primary mb-3 mx-auto">
+            <i class="bi bi-fingerprint fs-2"></i>
+          </div>
+          <h5 class="fw-bold">Marcaje</h5>
+          <p class="text-muted small">Registra tu jornada laboral.</p>
+          <button class="btn btn-primary w-100 rounded-pill" routerLink="/dashboard/home">
+            Ir
+          </button>
+        </div>
+      </div>
+    </div>
+<div class="col-md-4" *ngIf="currentUserRole === 'ADMIN' || currentUserRole === 'SUPERVISOR'">
+  <div class="card border-0 shadow-sm h-100 hover-card" style="border-radius: 20px">
+    <div class="card-body p-4 text-center">
+      <div class="icon-circle bg-danger-subtle text-danger mb-3 mx-auto">
+        <i class="bi bi-people-fill fs-2"></i>
+      </div>
+      <h5 class="fw-bold">Personal</h5>
+      <p class="text-muted small">Gestiona geovallas y empleados.</p>
+      <button
+        class="btn btn-outline-danger w-100 rounded-pill"
+        routerLink="/dashboard/usuarios"
+      >
+        Gestionar
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-4" *ngIf="currentUserRole === 'ADMIN' || currentUserRole === 'SUPERVISOR'">
+  <div class="card border-0 shadow-sm h-100 hover-card" style="border-radius: 20px">
+    <div class="card-body p-4 text-center">
+      <div class="icon-circle bg-success-subtle text-success mb-3 mx-auto">
+        <i class="bi bi-file-earmark-text-fill fs-2"></i>
+      </div>
+      <h5 class="fw-bold">Reportes</h5>
+      <p class="text-muted small">Auditoría y exportación Excel.</p>
+      <button
+        class="btn btn-outline-success w-100 rounded-pill"
+        routerLink="/dashboard/reportes"
+      >
+        Ver
+      </button>
+    </div>
+  </div>
+</div>
+  </div>
+</div>

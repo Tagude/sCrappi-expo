@@ -1,0 +1,83 @@
+<div class="container d-flex justify-content-center align-items-center vh-100">
+  <div class="card shadow-lg p-4" style="max-width: 550px; width: 100%; border-radius: 15px">
+    <div class="text-center mb-4">
+      <h2 class="fw-bold text-primary">Crear Cuenta</h2>
+      <p class="text-muted">Únete a sCrappi para gestionar tu tiempo</p>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Documento</label>
+          <input type="text" class="form-control" formControlName="documento"
+            [ngClass]="{ 'is-invalid': f['documento'].touched && f['documento'].errors }" placeholder="Ej: 10203040" />
+          <div *ngIf="f['documento'].touched && f['documento'].errors" class="invalid-feedback">
+            <div *ngIf="f['documento'].errors?.['required']">Obligatorio.</div>
+            <div *ngIf="f['documento'].errors?.['pattern']">Solo números.</div>
+          </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Teléfono</label>
+          <input type="text" class="form-control" formControlName="telefono"
+            [ngClass]="{ 'is-invalid': f['telefono'].touched && f['telefono'].errors }" placeholder="3001234567" />
+          <div *ngIf="f['telefono'].touched && f['telefono'].errors" class="invalid-feedback">
+            <div *ngIf="f['telefono'].errors?.['required']">Obligatorio.</div>
+          </div>
+        </div>
+      </div> <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Nombre</label>
+          <input type="text" class="form-control" formControlName="nombre"
+            [ngClass]="{ 'is-invalid': f['nombre'].touched && f['nombre'].errors }" placeholder="Jhon" />
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Apellido</label>
+          <input type="text" class="form-control" formControlName="apellido"
+            [ngClass]="{ 'is-invalid': f['apellido'].touched && f['apellido'].errors }" placeholder="Mendoza" />
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Correo Electrónico</label>
+        <input type="email" class="form-control" formControlName="email"
+          [ngClass]="{ 'is-invalid': f['email'].touched && f['email'].errors }" placeholder="nombre@scrappi.com" />
+        <div *ngIf="f['email'].touched && f['email'].errors" class="invalid-feedback">
+          <div *ngIf="f['email'].errors?.['required']">El correo es obligatorio.</div>
+          <div *ngIf="f['email'].errors?.['email']">Formato inválido.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Rol solicitado</label>
+          <select class="form-select" formControlName="role"
+            [ngClass]="{ 'is-invalid': f['role'].touched && f['role'].errors }">
+            <option value="" disabled>Selecciona...</option>
+            <option value="USER">Empleado</option>
+            <option value="ADMIN">Administrador</option>
+            <option value="SUPERVISOR">Supervisor</option>
+          </select>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Contraseña</label>
+          <input type="password" class="form-control" formControlName="password"
+            [ngClass]="{ 'is-invalid': f['password'].touched && f['password'].errors }" placeholder="********" />
+          <div *ngIf="f['password'].touched && f['password'].errors" class="invalid-feedback">
+            <div *ngIf="f['password'].errors?.['minlength']">Mínimo 8 caracteres.</div>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100 fw-bold shadow-sm mt-2" [disabled]="registerForm.invalid">
+        Registrarme
+      </button>
+    </form>
+
+    <div class="mt-3 text-center">
+      <small>¿Ya tienes cuenta? <a routerLink="/login" class="text-decoration-none">Inicia sesión</a></small>
+    </div>
+  </div>
+</div>

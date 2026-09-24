@@ -1,0 +1,89 @@
+<div class="login-page">
+  <div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card login-card shadow-lg p-4 p-md-5 animate__animated animate__fadeIn">
+      <div
+        *ngIf="errorLogin"
+        class="alert alert-danger border-0 shadow-sm mb-4 animate__animated animate__shakeX"
+        role="alert"
+      >
+        <div class="d-flex align-items-center">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>
+          <div class="small"><strong>Error:</strong> {{ errorLogin }}</div>
+        </div>
+      </div>
+
+      <div
+        *ngIf="loginExitoso"
+        class="alert alert-success border-0 shadow-sm mb-4 animate__animated animate__fadeIn"
+        role="alert"
+      >
+        <div class="d-flex align-items-center">
+          <i class="bi bi-check-circle-fill me-2"></i>
+          <div class="small"><strong>Excelente:</strong> {{ loginExitoso }}</div>
+        </div>
+      </div>
+
+      <div class="text-center mb-5">
+        <h2 class="fw-bold text-primary mb-0" style="letter-spacing: -1.5px">sCrappi</h2>
+        <p class="text-muted small fw-bold text-uppercase" style="letter-spacing: 1px">
+          Control de Asistencia
+        </p>
+      </div>
+
+      <form *ngIf="loginForm" [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <div class="form-floating mb-3">
+          <input
+            type="text"
+            class="form-control custom-input"
+            id="floatingInput"
+            formControlName="document"
+            placeholder="Documento"
+            [ngClass]="{ 'is-invalid': f['document'].touched && f['document'].errors }"
+          />
+          <label for="floatingInput" class="text-muted">Documento de Identidad</label>
+
+          <div *ngIf="f['document'].touched && f['document'].errors" class="invalid-feedback">
+            <small *ngIf="f['document'].errors?.['required']">El Documento es obligatorio.</small>
+            <small *ngIf="f['document'].errors?.['pattern']">Solo se permiten números.</small>
+          </div>
+        </div>
+
+        <div class="form-floating mb-3">
+          <input
+            type="password"
+            class="form-control custom-input"
+            id="floatingPassword"
+            formControlName="password"
+            placeholder="Contraseña"
+            [ngClass]="{ 'is-invalid': f['password'].touched && f['password'].errors }"
+          />
+          <label for="floatingPassword" class="text-muted">Contraseña</label>
+
+          <div *ngIf="f['password'].touched && f['password'].errors" class="invalid-feedback">
+            <small *ngIf="f['password'].errors?.['required']">La contraseña es obligatoria.</small>
+            <small *ngIf="f['password'].errors?.['minlength']">Mínimo 6 caracteres.</small>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between align-items-center mb-4 px-1">
+          <div class="form-check custom-checkbox">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="remember"
+              formControlName="remember"
+            />
+            <label class="form-check-label small text-muted" for="remember">Recordarme (PWA)</label>
+          </div>
+        </div>
+
+        <button
+          class="w-100 btn btn-primary btn-lg shadow btn-login py-3 fw-bold"
+          type="submit"
+          [disabled]="loginForm.invalid"
+        >
+          INGRESAR AL PANEL
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

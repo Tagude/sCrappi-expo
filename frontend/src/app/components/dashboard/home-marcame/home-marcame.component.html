@@ -1,0 +1,183 @@
+<div class="container-fluid py-4">
+  <div class="row justify-content-center g-4">
+    <div class="col-12 col-lg-5 d-flex flex-column align-items-center">
+      <div
+        class="card shadow-lg p-5 text-center border-0 w-100"
+        style="border-radius: 25px; max-width: 400px"
+      >
+        <h3 class="text-primary fw-bold mb-0">sCrappi</h3>
+        <small class="text-muted fw-bold"
+          >ID: {{ usuarioSesion?.document || usuarioSesion?.userName }}</small
+        >
+
+        <div class="my-4">
+          <h1 class="display-4 fw-bold text-dark">{{ horaActual | date: 'HH:mm:ss' }}</h1>
+          <p class="text-secondary text-capitalize">{{ horaActual | date: 'EEEE, d MMMM y' }}</p>
+          <hr class="w-25 mx-auto" />
+          <p class="fw-bold text-dark mb-0">
+            {{ usuarioSesion?.name }} {{ usuarioSesion?.lastName }}
+          </p>
+        </div>
+
+        <div
+          *ngIf="mostrarAlertaExito"
+          class="alert alert-success border-0 shadow-sm mb-4 fade show animate__animated animate__fadeIn"
+          role="alert"
+          style="border-radius: 12px"
+        >
+          <small class="fw-bold"
+            ><i class="bi bi-check-circle-fill me-2"></i>{{ mensajeAlerta }}</small
+          >
+        </div>
+
+        <div
+          *ngIf="mostrarAlertaError"
+          class="alert alert-danger border-0 shadow-sm mb-4 fade show animate__animated animate__fadeIn"
+          role="alert"
+          style="border-radius: 12px"
+        >
+          <small class="fw-bold"
+            ><i class="bi bi-exclamation-triangle-fill me-2"></i>{{ mensajeError }}</small
+          >
+        </div>
+
+        <button
+          (click)="solicitarRegistro(content)"
+          [ngClass]="jornadaActiva ? 'btn-danger' : 'btn-success'"
+          class="btn rounded-circle shadow-lg border-4 border-white mx-auto d-flex align-items-center justify-content-center transition-all"
+          style="
+            width: 170px;
+            height: 170px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            line-height: 1.2;
+          "
+        >
+          REGISTRAR<br />{{ jornadaActiva ? 'SALIDA' : 'ENTRADA' }}
+        </button>
+
+        <div class="mt-4 p-3 rounded bg-light border-0 shadow-sm">
+          <small class="text-muted d-block mb-1">Estado del Marcaje:</small>
+          <span
+            [ngClass]="
+              ubicacionEstado.includes('Error') || ubicacionEstado.includes('Fuera')
+                ? 'text-danger'
+                : 'text-primary'
+            "
+            class="fw-bold small"
+          >
+            <i
+              class="bi"
+              [ngClass]="ubicacionEstado.includes('Dentro') ? 'bi-geo-alt-fill' : 'bi-geo-alt'"
+            ></i>
+            {{ ubicacionEstado }}
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-lg-6 d-flex flex-column align-items-center">
+      <div class="w-100 animate__animated animate__fadeInUp" style="max-width: 450px">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h6 class="text-primary fw-bold mb-0">
+            <i class="bi bi-clock-history me-2"></i>Últimos Marcajes
+          </h6>
+          <span class="badge bg-light text-primary border shadow-sm"
+            >{{ historialMarcajes.length }} registros</span
+          >
+        </div>
+
+        <div
+          class="history-container shadow-sm bg-white"
+          style="border-radius: 20px; overflow: hidden"
+        >
+          <div *ngIf="historialMarcajes.length === 0" class="text-center p-4 bg-white rounded">
+            <small class="text-muted italic">No hay registros recientes para mostrar.</small>
+          </div>
+
+          <div
+            *ngFor="let log of historialMarcajes"
+            class="history-card d-flex align-items-center p-3 border-bottom transition-all"
+          >
+            <div
+              class="status-icon me-3"
+              [ngClass]="log.complete ? 'text-success' : 'text-warning'"
+            >
+              <i
+                class="bi"
+                [ngClass]="log.complete ? 'bi-check-circle-fill' : 'bi-play-circle-fill'"
+                style="font-size: 1.5rem"
+              ></i>
+            </div>
+
+            <div class="flex-grow-1">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <span class="fw-bold text-dark small d-block">{{
+                    log.hourCheckIn | date: 'EEEE, d MMM' | titlecase
+                  }}</span>
+                  <small class="text-primary fw-bold">
+                    <i class="bi bi-building me-1"></i
+                    >{{ log.workStation?.name || 'Sede Sabaneta' }}
+                  </small>
+                </div>
+                <span
+                  class="badge rounded-pill"
+                  [ngClass]="
+                    log.complete
+                      ? 'bg-success-subtle text-success border border-success-subtle'
+                      : 'bg-warning-subtle text-warning-emphasis border border-warning-subtle'
+                  "
+                >
+                  {{ log.complete ? 'Completado' : 'En Curso' }}
+                </span>
+              </div>
+
+              <div class="d-flex gap-3 mt-1">
+                <small class="text-muted">
+                  <i class="bi bi-box-arrow-in-right me-1 text-success"></i>
+                  <strong>Entrada:</strong> {{ log.hourCheckIn | date: 'hh:mm a' : 'UTC' }}
+                </small>
+
+                <small class="text-muted" *ngIf="log.hourCheckOut">
+                  <i class="bi bi-box-arrow-right me-1 text-danger"></i>
+                  <strong>Salida:</strong> {{ log.hourCheckOut | date: 'hh:mm a' : 'UTC' }}
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-header border-0">
+    <h4 class="modal-title fw-bold text-primary">Confirmación</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body text-center p-4">
+    <p class="lead">
+      ¿Deseas registrar tu
+      <strong [ngClass]="jornadaActiva ? 'text-danger' : 'text-success'" class="text-uppercase">
+        {{ jornadaActiva ? 'Salida' : 'Entrada' }}
+      </strong>
+      de turno?
+    </p>
+    <small class="text-muted"
+      >Empleado: {{ usuarioSesion?.name }} {{ usuarioSesion?.lastName }}</small
+    >
+  </div>
+  <div class="modal-footer border-0 d-flex justify-content-center">
+    <button type="button" class="btn btn-light px-4" (click)="modal.dismiss()">Cancelar</button>
+    <button
+      type="button"
+      class="btn px-4 fw-bold"
+      [ngClass]="jornadaActiva ? 'btn-danger' : 'btn-success'"
+      (click)="modal.close('confirmar')"
+    >
+      Confirmar {{ jornadaActiva ? 'Salida' : 'Entrada' }}
+    </button>
+  </div>
+</ng-template>
+<div id="map" style="height: 250px; width: 100%; border-radius: 15px;"></div>

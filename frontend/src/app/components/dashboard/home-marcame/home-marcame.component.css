@@ -1,0 +1,60 @@
+:host {
+  display: block;
+}
+.main-punch-btn {
+  width: 180px;
+  height: 180px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  line-height: 1.2;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.main-punch-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2) !important;
+}
+
+.history-card {
+  border-radius: 18px;
+  border: 1px solid rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.history-card:hover {
+  transform: translateX(10px);
+  border-color: var(--bs-primary);
+}
+
+.status-indicator {
+  width: 6px;
+  height: 50px;
+  border-radius: 10px;
+}
+
+/* Scroll elegante para el historial si hay muchos registros */
+.history-scroll-container {
+  max-height: 70vh;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.history-scroll-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.history-scroll-container::-webkit-scrollbar-thumb {
+  background: #e0e0e0;
+  border-radius: 10px;
+}
+
+/* 🆕 NUEVO CAMBIO: Estilo obligatorio para Leaflet */
+#map {
+  height: 250px; /* Altura obligatoria o no se verá nada */
+  width: 100%;
+  border-radius: 20px;
+  border: 2px solid #f0f0f0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  z-index: 1;
+  margin-bottom: 15px;
+}

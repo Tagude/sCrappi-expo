@@ -1,0 +1,11 @@
+:host {
+  display: block;
+}
+#map {
+  height: 200px; /* Un poco más bajo para que no empuje todo hacia abajo */
+  width: 100%;
+  border-radius: 15px;
+  margin-bottom: 20px; /* Espacio antes de las tarjetas azul/verde/naranja */
+  border: 1px solid #dee2e6;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}

@@ -1,0 +1,20 @@
+/* dashboard.component.css */
+:host {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* dashboard.component.css */
+.dashboard-content-wrapper {
+  background-color: #f8f9fa; /* Gris muy suave */
+  min-height: calc(100vh - 56px); /* 100% alto menos la navbar */
+  padding-top: 2rem;
+}
+
+.nav-link.active {
+  color: #33f0f0 !important; /* Color azul de Bootstrap o el de tu marca */
+  font-weight: bold;
+  border-bottom: 2px solid #c4fff9;
+}
