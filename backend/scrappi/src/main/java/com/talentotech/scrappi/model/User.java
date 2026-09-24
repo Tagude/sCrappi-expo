@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -38,6 +39,8 @@ public class User {
     private String email;
     @Enumerated(EnumType.STRING)
     private Role role;
+    // Solo se recibe (al crear o cambiar la contraseña); nunca se envía en las respuestas
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable=false)
     private String password;
     @Column(nullable=false)

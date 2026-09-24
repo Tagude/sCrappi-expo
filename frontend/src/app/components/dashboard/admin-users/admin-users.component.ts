@@ -199,7 +199,8 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
     this.userForm.get('password')?.clearValidators();
     this.userForm.get('password')?.updateValueAndValidity();
 
-    this.userForm.patchValue(user);
+    // la contraseña queda vacía: solo se envía si el administrador escribe una nueva
+    this.userForm.patchValue({ ...user, password: '' });
     this.userForm.get('document')?.disable();
     this.userForm.get('userName')?.disable();
 

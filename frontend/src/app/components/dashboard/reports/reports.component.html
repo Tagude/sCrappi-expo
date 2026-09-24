@@ -52,11 +52,11 @@
         <tbody>
           <ng-container *ngIf="!cargando; else loadingTpl">
             <tr *ngFor="let log of reporteFiltrado">
-              <td class="ps-4">{{ log.hourCheckIn | date: 'dd/MM/yyyy' }}</td>
+              <td class="ps-4">{{ log.hourCheckIn | date: 'dd/MM/yyyy' : '-0500' }}</td>
               <td class="fw-bold">{{ log.user?.name }} {{ log.user?.lastName }}</td>
-              <td>{{ log.hourCheckIn | date: 'hh:mm a' }}</td>
+              <td>{{ log.hourCheckIn | date: 'hh:mm a' : '-0500' }}</td>
               <td>
-                <span *ngIf="log.hourCheckOut; else sinSalida">{{ log.hourCheckOut | date: 'hh:mm a' }}</span>
+                <span *ngIf="log.hourCheckOut; else sinSalida">{{ log.hourCheckOut | date: 'hh:mm a' : '-0500' }}</span>
                 <ng-template #sinSalida><span class="text-muted fst-italic">Sin registrar</span></ng-template>
               </td>
               <td><small class="text-muted">{{ log.latitudeIn?.toFixed(4) }}, {{ log.longitudeIn?.toFixed(4) }}</small></td>

@@ -34,13 +34,14 @@ public class WorkLog {
     @JsonIgnoreProperties({ "workLogs", "assignments" })
     private WorkStation workStation;
 
+    // Las horas se guardan en hora de Bogotá; se envían con su desfase (-05:00, Colombia no
+    // tiene horario de verano) para que el navegador las interprete como el instante correcto.
     @Column(name = "hour_check_in", nullable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
-    
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'-05:00'")
     private LocalDateTime hourCheckIn;
 
     @Column(name = "hour_check_out")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'-05:00'")
     private LocalDateTime hourCheckOut;
 
     @Column(name = "longitude_in", nullable = false)

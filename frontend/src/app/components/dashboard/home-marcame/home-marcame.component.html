@@ -113,7 +113,7 @@
               <div class="d-flex justify-content-between align-items-start">
                 <div>
                   <span class="fw-bold text-dark small d-block">{{
-                    log.hourCheckIn | date: 'EEEE, d MMM' | titlecase
+                    log.hourCheckIn | date: 'EEEE, d MMM' : '-0500' | titlecase
                   }}</span>
                   <small class="text-primary fw-bold">
                     <i class="bi bi-building me-1"></i
@@ -135,12 +135,12 @@
               <div class="d-flex gap-3 mt-1">
                 <small class="text-muted">
                   <i class="bi bi-box-arrow-in-right me-1 text-success"></i>
-                  <strong>Entrada:</strong> {{ log.hourCheckIn | date: 'hh:mm a' : 'UTC' }}
+                  <strong>Entrada:</strong> {{ log.hourCheckIn | date: 'hh:mm a' : '-0500' }}
                 </small>
 
                 <small class="text-muted" *ngIf="log.hourCheckOut">
                   <i class="bi bi-box-arrow-right me-1 text-danger"></i>
-                  <strong>Salida:</strong> {{ log.hourCheckOut | date: 'hh:mm a' : 'UTC' }}
+                  <strong>Salida:</strong> {{ log.hourCheckOut | date: 'hh:mm a' : '-0500' }}
                 </small>
               </div>
             </div>

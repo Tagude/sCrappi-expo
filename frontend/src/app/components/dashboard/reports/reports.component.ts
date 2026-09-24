@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { WorklogService } from '../../../services/worklog/worklog.service';
@@ -25,6 +25,7 @@ export class ReportsComponent implements OnInit {
   constructor(
     private worklogService: WorklogService,
     private userService: UserService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -34,7 +35,10 @@ export class ReportsComponent implements OnInit {
 
   private cargarEmpleados() {
     this.userService.getUsers().subscribe({
-      next: (users) => (this.listaEmpleados = users),
+      next: (users) => {
+        this.listaEmpleados = users;
+        this.cdr.markForCheck(); // la app no usa zone.js: hay que avisar a la vista
+      },
       error: (err) => console.error('Error cargando empleados:', err),
     });
   }
@@ -48,10 +52,12 @@ export class ReportsComponent implements OnInit {
         );
         this.reporteFiltrado = this.todosLosLogs;
         this.cargando = false;
+        this.cdr.markForCheck();
       },
       error: (err) => {
         console.error('Error cargando registros:', err);
         this.cargando = false;
+        this.cdr.markForCheck();
       },
     });
   }
@@ -78,16 +84,18 @@ export class ReportsComponent implements OnInit {
 
   exportarExcel() {
     const datos = this.reporteFiltrado.map((log) => ({
-      Fecha: new Date(log.hourCheckIn).toLocaleDateString('es-CO'),
+      Fecha: new Date(log.hourCheckIn).toLocaleDateString('es-CO', { timeZone: 'America/Bogota' }),
       Empleado: `${log.user?.name ?? ''} ${log.user?.lastName ?? ''}`.trim(),
       Entrada: new Date(log.hourCheckIn).toLocaleTimeString('es-CO', {
         hour: '2-digit',
         minute: '2-digit',
+        timeZone: 'America/Bogota',
       }),
       Salida: log.hourCheckOut
         ? new Date(log.hourCheckOut).toLocaleTimeString('es-CO', {
             hour: '2-digit',
             minute: '2-digit',
+            timeZone: 'America/Bogota',
           })
         : 'Sin registrar',
       'Ubicación Entrada': `${log.latitudeIn?.toFixed(4)}, ${log.longitudeIn?.toFixed(4)}`,

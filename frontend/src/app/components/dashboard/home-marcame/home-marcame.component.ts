@@ -5,6 +5,7 @@ import { WorklogService } from '../../../services/worklog/worklog.service';
 import { AuthService } from '../../../services/auth/auth.service';
 
 import * as L from 'leaflet';
+import { distanciaEnMetros } from '../../../utils/geo';
 
 @Component({
   selector: 'app-home-marcame',
@@ -85,12 +86,12 @@ private initMap() {
     attribution: '© OpenStreetMap contributors'
   }).addTo(this.map);
 
-  // 4. 🆕 Añadir el círculo de la Geovalla (Sabaneta)
+  // 4. Círculo de la geovalla alrededor del puesto
   L.circle([this.puestoLat, this.puestoLon], {
     color: '#0d6efd',
     fillColor: '#0d6efd',
     fillOpacity: 0.2,
-    radius: 100 // Radio en metros
+    radius: this.radioMaximo, // radio de la estación, en metros
   }).addTo(this.map);
 
   // 5. 🆕 EL TRUCO FINAL: Forzar el renderizado
@@ -103,12 +104,12 @@ private initMap() {
 }
 
   private cargarConfiguracionGeovalla() {
-    // Consultamos la estación 1 (Sabaneta) de forma dinámica
+    // Consultamos la estación 1 (Puerta del Norte) de forma dinámica
     this.worklogService.obtenerConfiguracionEstacion(1).subscribe({
       next: (estacion) => {
         this.puestoLat = estacion.latitude;
         this.puestoLon = estacion.longitude;
-        this.radioMaximo = estacion.radio_meter || 0.001;
+        this.radioMaximo = estacion.radio_meter || 100; // metros
         this.initMap();
         this.ubicacionEstado = 'GPS Listo (Geovalla Activa)';
         console.log('📍 Configuración de geovalla cargada:', estacion.name);
@@ -150,10 +151,8 @@ private initMap() {
         const lat = pos.coords.latitude;
         const lon = pos.coords.longitude;
 
-        // Cálculo de distancia contra valores dinámicos
-        const distancia = Math.sqrt(
-          Math.pow(lat - this.puestoLat, 2) + Math.pow(lon - this.puestoLon, 2),
-        );
+        // Distancia real en metros hasta el puesto, comparada con el radio de la geovalla
+        const distancia = distanciaEnMetros(lat, lon, this.puestoLat, this.puestoLon);
 
         if (distancia <= this.radioMaximo) {
           if (!this.jornadaActiva) {
@@ -163,7 +162,7 @@ private initMap() {
               workStation: { id: 1 },
               latitudeIn: lat,
               longitudeIn: lon,
-              hourCheckIn: new Date().toISOString(),
+              // la hora de entrada la pone el servidor (hora de Bogotá), no el navegador
               complete: false,
             };
 
@@ -193,7 +192,7 @@ private initMap() {
           }
         } else {
           this.ubicacionEstado = 'Fuera de rango.';
-          this.mensajeError = 'Te encuentras fuera del perímetro permitido.';
+          this.mensajeError = `Te encuentras a ${Math.round(distancia)} m del puesto; el máximo permitido es ${this.radioMaximo} m.`;
           this.mostrarAlertaError = true;
           this.cdRef.detectChanges();
         }
@@ -221,7 +220,9 @@ private initMap() {
 
   private gestionarError(err: any) {
     console.error('❌ Error API:', err);
-    this.mensajeError = 'Error de comunicación con el servidor.';
+    // si el servidor explica el motivo (p. ej. jornada ya abierta), se muestra ese texto
+    this.mensajeError =
+      typeof err?.error === 'string' && err.error ? err.error : 'Error de comunicación con el servidor.';
     this.mostrarAlertaError = true;
     this.cdRef.detectChanges();
   }

@@ -31,7 +31,7 @@ public class WorkLogService {
         boolean tieneTurnoAbierto = logsUsuario.stream()
                 .anyMatch(log -> !log.getComplete());
         if (tieneTurnoAbierto) {
-            throw new RuntimeException("El usuario ya tiene una jornada activa sin cerrar.");
+            throw new IllegalStateException("Ya tienes una jornada activa sin cerrar. Registra la salida primero.");
         }
 
         Long workStationId = workLog.getWorkStation().getId();
@@ -55,6 +55,10 @@ public class WorkLogService {
     public WorkLog checkout(Long id, Double longitudeOut, Double latitudeOut) {
         WorkLog workLog = workLogRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("WorkLog not found"));
+
+        if (Boolean.TRUE.equals(workLog.getComplete())) {
+            throw new IllegalStateException("Esta jornada ya tiene registrada la salida.");
+        }
 
         // Para que la hora cargue en Bogotá
         workLog.setHourCheckOut(LocalDateTime.now(ZoneId.of("America/Bogota")));
