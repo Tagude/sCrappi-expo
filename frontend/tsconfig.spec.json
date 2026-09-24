@@ -12,5 +12,5 @@
   "include": [
     "src/**/*.d.ts",
     "src/**/*.spec.ts"
-, "src/app/components/dashboard/home-marcame/home-marcame.component.ts"  ]
+  ]
 }

@@ -12,7 +12,7 @@
 	<artifactId>scrappi</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>scrappi</name>
-	<description>Demo project for Spring Boot</description>
+	<description>sCrappi: control de acceso y permanencia de personal in situ con geovalla</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -53,6 +53,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- base de datos en memoria para las pruebas: no necesitan PostgreSQL -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
 			<scope>test</scope>
 		</dependency>
 

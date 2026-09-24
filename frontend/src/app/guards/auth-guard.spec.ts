@@ -1,17 +1,32 @@
 import { TestBed } from '@angular/core/testing';
-import { CanActivateFn } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 
 import { authGuard } from './auth-guard';
 
 describe('authGuard', () => {
-  const executeGuard: CanActivateFn = (...guardParameters) => 
-      TestBed.runInInjectionContext(() => authGuard(...guardParameters));
+  const navigate = vi.fn();
+  const ejecutar = () =>
+    TestBed.runInInjectionContext(() =>
+      authGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
+    );
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    localStorage.clear();
+    navigate.mockReset();
+    TestBed.configureTestingModule({
+      providers: [{ provide: Router, useValue: { navigate } }],
+    });
   });
 
-  it('should be created', () => {
-    expect(executeGuard).toBeTruthy();
+  it('deja pasar al dashboard cuando hay sesión', () => {
+    localStorage.setItem('usuarioSesion', JSON.stringify({ id: 1, role: 'ADMIN' }));
+
+    expect(ejecutar()).toBe(true);
+    expect(navigate).not.toHaveBeenCalled();
+  });
+
+  it('manda al login cuando no hay sesión', () => {
+    expect(ejecutar()).toBe(false);
+    expect(navigate).toHaveBeenCalledWith(['/login']);
   });
 });

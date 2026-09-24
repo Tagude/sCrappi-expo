@@ -29,7 +29,8 @@ public class SessionService {
         session.setUser(user);
         session.setStatus(SessionStatus.ACTIVE);
         session.setIp(ip);
-        session.setDevice(device);
+        // el navegador siempre envía User-Agent, pero otros clientes pueden omitirlo
+        session.setDevice(device != null && !device.isBlank() ? device : "Desconocido");
 
         return sessionRepository.save(session);
     }        
