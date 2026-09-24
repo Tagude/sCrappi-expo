@@ -102,6 +102,12 @@ curl -X POST http://localhost:8080/api/users -H "Content-Type: application/json"
 
 Después inicia sesión con el documento `1000000001` o el usuario `admin` y la contraseña `admin123`. Los demás empleados se crean desde **Administración**.
 
+**Datos de demostración (opcional).** `backend/scrappi/demo/marcajes-demo.sql` llena las dos últimas semanas hábiles con jornadas de ejemplo, con fechas relativas al día en que se ejecuta, para que el gráfico semanal y los reportes tengan contenido. Necesita los usuarios `crestrepo`, `agomez`, `vrios` y `smejia` (créalos como el administrador de arriba) y se puede ejecutar varias veces:
+
+```bash
+psql -h localhost -U postgres -d db_scrappi -f backend/scrappi/demo/marcajes-demo.sql
+```
+
 > **Probar la geovalla sin ir al puesto:** en Chrome abre DevTools → ⋮ → *More tools* → *Sensors* y en *Location* escribe las coordenadas del puesto (6.351, -75.556). Con una ubicación lejana verás el rechazo por distancia.
 
 ## Pruebas
