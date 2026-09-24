@@ -99,7 +99,6 @@ private initMap() {
   setTimeout(() => {
     this.map.invalidateSize();
     this.cdRef.detectChanges();
-    console.log("✅ Mapa renderizado con éxito");
   }, 800);
 }
 
@@ -112,7 +111,6 @@ private initMap() {
         this.radioMaximo = estacion.radio_meter || 100; // metros
         this.initMap();
         this.ubicacionEstado = 'GPS Listo (Geovalla Activa)';
-        console.log('📍 Configuración de geovalla cargada:', estacion.name);
         this.cdRef.detectChanges();
       },
       error: (err) => {

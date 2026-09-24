@@ -1,0 +1,8 @@
+# Plantilla de configuración local.
+# Cópiala como application-local.yml (en esta misma carpeta) y pon tus datos de PostgreSQL.
+# application-local.yml está en .gitignore: tus credenciales nunca se suben al repositorio.
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/db_scrappi
+    username: postgres
+    password: TU_CONTRASEÑA

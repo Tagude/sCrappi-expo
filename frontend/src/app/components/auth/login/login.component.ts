@@ -31,7 +31,6 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.fb.group({
       document: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      remember: [false],
     });
   }
 
@@ -41,7 +40,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.authService.isLoggedIn()) {
-      this.router.navigate(['/dashboard/usuarios'], { replaceUrl: true });
+      this.router.navigate(['/dashboard'], { replaceUrl: true });
     }
   }
 
@@ -63,7 +62,7 @@ export class LoginComponent implements OnInit {
     this.http.post<any>(`${environment.apiUrl}/users/login`, loginRequest).subscribe({
       next: (user) => {
         if (user && user.role) {
-          this.loginExitoso = `¡Excelente: ¡Hola ${user.name}! Entrando a ScrAppi...`;
+          this.loginExitoso = `¡Hola, ${user.name}! Entrando a sCrappi...`;
 
           // IMPORTANTE: Guardamos el objeto como JSON para el componente de administración
           //GUARDAMOS LAS DOS LLAVES PARA NO TENER ERRORES
@@ -75,7 +74,7 @@ export class LoginComponent implements OnInit {
 
           // 🚀 NAVEGACIÓN A LA RUTA HIJA EXACTA
           setTimeout(() => {
-            this.router.navigate(['/dashboard/']);
+            this.router.navigate(['/dashboard']);
           }, 1500);
         }
       },

@@ -88,7 +88,7 @@
                 <th class="ps-4 py-3">Documento</th>
                 <th>Nombre Completo</th>
                 <th>Usuario</th>
-                <th>Telefono</th>
+                <th>Teléfono</th>
                 <th>Rol</th>
                 <th>Estado</th>
                 <th class="text-center pe-4">Acciones</th>
@@ -105,7 +105,7 @@
                   <span class="text-primary fw-medium">@{{ user.userName }}</span>
                 </td>
                 <td>
-                  <span class="text-body fw-medium">@{{ user.phone }}</span>
+                  <span class="text-body fw-medium">{{ user.phone }}</span>
                 </td>
                 <td>
                   <span
@@ -155,7 +155,7 @@
                 </td>
               </tr>
               <tr *ngIf="listaFiltrada.length === 0">
-                <td colspan="6" class="text-center py-5 text-muted fst-italic">
+                <td colspan="7" class="text-center py-5 text-muted fst-italic">
                   No se encontraron usuarios con ese criterio de búsqueda.
                 </td>
               </tr>

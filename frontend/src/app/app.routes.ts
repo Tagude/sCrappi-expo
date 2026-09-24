@@ -6,7 +6,7 @@ import { HomeMarcameComponent } from './components/dashboard/home-marcame/home-m
 import { AdminUsersComponent } from './components/dashboard/admin-users/admin-users.component';
 import { ReportsComponent } from './components/dashboard/reports/reports.component';
 import { HomeDashboardComponent } from './components/dashboard/home-dashboard/home-dashboard.component';
-import { authGuard } from './guards/auth-guard';
+import { authGuard, roleGuard } from './guards/auth-guard';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -20,8 +20,9 @@ export const routes: Routes = [
       { path: '', component: HomeDashboardComponent },
 
       { path: 'home', component: HomeMarcameComponent }, // El botón que ya hiciste
-      { path: 'usuarios', component: AdminUsersComponent }, // Solo para el Admin
-      { path: 'reportes', component: ReportsComponent },
+      // Administración y Reportes: solo ADMIN y SUPERVISOR
+      { path: 'usuarios', component: AdminUsersComponent, canActivate: [roleGuard('ADMIN', 'SUPERVISOR')] },
+      { path: 'reportes', component: ReportsComponent, canActivate: [roleGuard('ADMIN', 'SUPERVISOR')] },
     ],
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirige la raíz al login

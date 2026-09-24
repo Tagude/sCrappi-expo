@@ -36,8 +36,16 @@
           class="nav-item"
           *ngIf="currentUserRole === 'ADMIN' || currentUserRole === 'SUPERVISOR'"
         >
-          <a class="nav-link" routerLink="/dashboard/usuarios" routerLinkActive="active">
+          <a class="nav-link" routerLink="/dashboard/usuarios" routerLinkActive="active" (click)="isMenuCollapsed = true">
             Administración
+          </a>
+        </li>
+        <li
+          class="nav-item"
+          *ngIf="currentUserRole === 'ADMIN' || currentUserRole === 'SUPERVISOR'"
+        >
+          <a class="nav-link" routerLink="/dashboard/reportes" routerLinkActive="active" (click)="isMenuCollapsed = true">
+            Reportes
           </a>
         </li>
 

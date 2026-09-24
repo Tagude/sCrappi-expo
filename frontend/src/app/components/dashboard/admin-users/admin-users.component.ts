@@ -27,27 +27,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   isLoading: boolean = true;
   isEditing: boolean = false;
   userIdToEdit: number | null = null;
-  // Historial estático (se mantiene nombre como propiedad visual del log)
-  historialOriginal = [
-    {
-      fecha: '08/03/2026 07:13:22',
-      nombre: 'Natalia Taborda',
-      evento: 'ENTRADA',
-      coords: '6.1440, -75.6150',
-      validacion: true,
-    },
-    {
-      fecha: '08/03/2026 08:05:45',
-      nombre: 'Jhon Mendoza',
-      evento: 'RECHAZADO',
-      coords: '6.1520, -75.6200',
-      validacion: false,
-    },
-  ];
-  historialFiltrado = [...this.historialOriginal];
-
   totalUsuarios: number = 0; // Ajustado de totalUsuarios
-  alertasGeovalla: number = 0;
   mostrarAlerta: boolean = false;
   mensajeAlerta: string = '';
   tipoAlerta: 'success' | 'danger' = 'success';
@@ -86,11 +66,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
       }
     }
 
-    console.log('--- SISTEMA DE PERMISOS ---');
-    console.log('Rol detectado en tabla:', this.currentUserRole);
-
     this.cargarUsuarios();
-    this.alertasGeovalla = 2;
   }
 
   cargarUsuarios(): void {
@@ -149,9 +125,6 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
         user.name.toLowerCase().includes(valor) ||
         user.lastName.toLowerCase().includes(valor) ||
         user.userName.toLowerCase().includes(valor),
-    );
-    this.historialFiltrado = this.historialOriginal.filter((hist) =>
-      hist.nombre.toLowerCase().includes(valor),
     );
   }
 
@@ -264,8 +237,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
                 this.lanzarAlerta('¡Usuario activado correctamente!', 'success');
               }
             },
-            error: (err) => {
-              console.error('Error:', err);
+            error: () => {
               this.lanzarAlerta('Error al procesar la solicitud', 'danger');
             },
           });
@@ -275,9 +247,6 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
         /* Cancelado */
       },
     );
-  }
-  gestionarGeovalla(user: User) {
-    console.log(`Geovalla para: ${user.userName}`);
   }
 ngOnDestroy(): void {
   this.mostrarAlerta = false;
